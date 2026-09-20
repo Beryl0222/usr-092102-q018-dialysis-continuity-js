@@ -1,0 +1,9 @@
+{
+  "event_id": "092102-018-sample-001",
+  "event_type": "PLAN_CONFIRMED",
+  "aggregate_type": "treatment_plan",
+  "aggregate_id": "plateau_dialysis_continuity-001",
+  "occurred_at": "2026-09-20T12:00:00+08:00",
+  "version": 1,
+  "summary": "高原透析连续调度领域样例"
+}
