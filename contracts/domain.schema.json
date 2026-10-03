@@ -14,7 +14,8 @@
   "properties": {
     "event_id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "事件标识，即幂等键：同一 event_id 重复投递必须按已处理对待，不得重复改变系统状态；接收方返回首次处理结果。"
     },
     "event_type": {
       "type": "string",
@@ -22,8 +23,13 @@
         "PLAN_CONFIRMED",
         "CAPACITY_CHANGED",
         "SESSION_RESERVED",
+        "SESSION_LOCKED",
+        "SESSION_CLOSED",
+        "TRANSFER_PROPOSED",
         "TRANSFER_ACCEPTED",
-        "TREATMENT_RECONCILED"
+        "TREATMENT_RECONCILED",
+        "ROUTE_STATUS_CHANGED",
+        "SETTLEMENT_RECORDED"
       ]
     },
     "aggregate_type": {
@@ -32,7 +38,9 @@
         "treatment_plan",
         "resource_capacity",
         "dialysis_session",
-        "transfer_handoff"
+        "transfer_handoff",
+        "route_status",
+        "settlement"
       ]
     },
     "aggregate_id": {
@@ -41,11 +49,13 @@
     },
     "occurred_at": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "业务发生时间，须携带发生地时区偏移。离线补录一律以该时间对账，而不是以入库时间对账。"
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "同一聚合内从 1 开始严格递增，用于乐观并发与顺序重放。"
     },
     "summary": {
       "type": "string",
