@@ -5,6 +5,7 @@
   "type": "module",
   "description": "领域事件基础校验",
   "scripts": {
+    "start": "node src/server.js",
     "test": "node --test"
   }
 }

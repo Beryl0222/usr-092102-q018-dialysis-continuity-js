@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "高原透析连续调度领域事件",
+  "description": "事件信封约定。event_id 为全局幂等键：同一 event_id 的事件只能被受理一次；version 为聚合内严格递增版本（首事件为 1）；occurred_at 为事件实际发生时间（离线补录以发生时间排序对账）。允许携带载荷字段。",
   "type": "object",
   "required": [
     "event_id",
@@ -14,7 +15,8 @@
   "properties": {
     "event_id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "全局唯一事件标识，幂等键。重复提交同一 event_id 必须返回首次结果而不是再次生效。"
     },
     "event_type": {
       "type": "string",
@@ -23,7 +25,15 @@
         "CAPACITY_CHANGED",
         "SESSION_RESERVED",
         "TRANSFER_ACCEPTED",
-        "TREATMENT_RECONCILED"
+        "TREATMENT_RECONCILED",
+        "DISRUPTION_DECLARED",
+        "ROAD_STATUS_UPDATED",
+        "TRANSFER_REQUESTED",
+        "MINIMAL_RECORD_SENT",
+        "HANDOFF_COMPLETED",
+        "OCCURRENCE_CLOSED",
+        "SETTLEMENT_RECORDED",
+        "PATIENT_NOTIFIED"
       ]
     },
     "aggregate_type": {
@@ -32,7 +42,12 @@
         "treatment_plan",
         "resource_capacity",
         "dialysis_session",
-        "transfer_handoff"
+        "transfer_handoff",
+        "disruption",
+        "transport_route",
+        "treatment_occurrence",
+        "settlement",
+        "patient_notification"
       ]
     },
     "aggregate_id": {
@@ -41,15 +56,30 @@
     },
     "occurred_at": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "事件发生时间（非录入时间），离线补录据此对账。"
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "聚合版本号，从 1 起严格递增，不允许跳号覆盖。"
     },
     "summary": {
       "type": "string",
       "minLength": 1
+    },
+    "payload": {
+      "type": "object",
+      "description": "事件业务载荷，结构由各事件类型自行约束，调度后端不得以此修改医生确认的处方版本。"
+    },
+    "causation_id": {
+      "type": "string",
+      "description": "触发本事件的上游事件或命令标识，用于链路追溯。"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "系统实际受理/补录时间，与 occurred_at 区分。"
     }
   },
   "additionalProperties": true

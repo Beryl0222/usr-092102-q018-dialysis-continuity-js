@@ -2,8 +2,27 @@
   "event_id": "092102-018-sample-001",
   "event_type": "PLAN_CONFIRMED",
   "aggregate_type": "treatment_plan",
-  "aggregate_id": "plateau_dialysis_continuity-001",
+  "aggregate_id": "plan-P0018",
   "occurred_at": "2026-09-20T12:00:00+08:00",
+  "recorded_at": "2026-09-20T12:05:00+08:00",
   "version": 1,
-  "summary": "高原透析连续调度领域样例"
+  "summary": "医生确认患者 P0018 血液透析处方 v1（每周三次）",
+  "payload": {
+    "patient_id": "P0018",
+    "prescription": {
+      "modality": "hd",
+      "duration_min": 240,
+      "anticoagulation": "low_molecular_heparin",
+      "vascular_access": "avf_left",
+      "dry_weight_kg": 58.2
+    },
+    "cadence": {
+      "per_week": 3,
+      "days": ["Mon", "Wed", "Fri"],
+      "shift": "morning"
+    },
+    "confirmed_by": "DR-0018",
+    "source": "physician",
+    "supersedes": null
+  }
 }
